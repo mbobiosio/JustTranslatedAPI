@@ -20,29 +20,15 @@ class TranslationViewModel @Inject constructor(
     private val getTranslationUseCase: TranslationUseCase
 ) : ViewModel() {
 
-    private val _uIState = MutableLiveData<UIState>()
+    private val _uIState: MutableLiveData<UIState> = MutableLiveData()
     val translation: LiveData<UIState> get() = _uIState
 
     fun handleTranslation(language: String, text: String) {
         getTranslationUseCase.invoke(language, text).onEach { result ->
-            when (result) {
-                is Resource.Loading -> {
-                    _uIState.value = UIState(
-                        isLoading = true
-                    )
-                }
-
-                is Resource.Success -> {
-                    _uIState.value = UIState(
-                        result = result.data
-                    )
-                }
-
-                is Resource.Error -> {
-                    _uIState.value = UIState(
-                        error = result.error?.message
-                    )
-                }
+            _uIState.value = when (result) {
+                is Resource.Loading -> UIState.Loading
+                is Resource.Error -> UIState.Error(result.error)
+                is Resource.Success -> UIState.Success(result.data)
             }
         }.launchIn(viewModelScope)
     }

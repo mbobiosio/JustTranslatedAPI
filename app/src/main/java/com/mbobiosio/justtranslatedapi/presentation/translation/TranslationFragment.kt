@@ -1,18 +1,16 @@
 package com.mbobiosio.justtranslatedapi.presentation.translation
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.mbobiosio.justtranslatedapi.R
 import com.mbobiosio.justtranslatedapi.databinding.FragmentTranslationBinding
 import com.mbobiosio.justtranslatedapi.domain.model.Translation
+import com.mbobiosio.justtranslatedapi.presentation.base.BaseFragment
 import com.mbobiosio.justtranslatedapi.util.getLanguageCode
 import com.mbobiosio.justtranslatedapi.util.toast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -20,44 +18,21 @@ import timber.log.Timber
  * https://linktr.ee/mbobiosio
  */
 @AndroidEntryPoint
-class TranslationFragment : Fragment() {
+class TranslationFragment :
+    BaseFragment<FragmentTranslationBinding>(R.layout.fragment_translation) {
 
-    private lateinit var binding: FragmentTranslationBinding
     private var langCode: String = ""
-    private val viewModel by viewModels<TranslationViewModel>()
+    private val translationViewModel by viewModels<TranslationViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentTranslationBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun setupViews() {
+        initViews()
+
+        // observe UI State
+        observeViewModel()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initViews() = with(binding) {
 
-        setupViews()
-
-        viewModel.translation.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                UIState(isLoading = true) -> {
-                    updateProgress(result.isLoading)
-                }
-                UIState(result = result.result) -> {
-                    updateUI(result.result)
-                    updateProgress(result.isLoading)
-                }
-                UIState(error = result.error) -> {
-                    showError(result.error)
-                    updateProgress(result.isLoading)
-                }
-            }
-        }
-    }
-
-    private fun setupViews() = with(binding) {
         // Setup Spinner
         spinner.apply {
             lifecycleOwner = this@TranslationFragment
@@ -88,7 +63,27 @@ class TranslationFragment : Fragment() {
                     langCode = getLanguageCode(language = langCode)
 
                     // make translation request
-                    viewModel.handleTranslation(language = langCode, text)
+                    translationViewModel.handleTranslation(language = langCode, text)
+                }
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            translationViewModel.translation.observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    UIState.Loading -> {
+                        updateProgress(true)
+                    }
+                    is UIState.Success -> {
+                        updateUI(result.result)
+                        updateProgress(false)
+                    }
+                    is UIState.Error -> {
+                        showError(result.message?.message)
+                        updateProgress(false)
+                    }
                 }
             }
         }
