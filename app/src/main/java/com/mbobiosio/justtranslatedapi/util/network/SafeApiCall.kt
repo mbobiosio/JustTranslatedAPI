@@ -22,35 +22,18 @@ suspend fun <T> safeApiCall(
     } catch (throwable: Throwable) {
         when (throwable) {
             is SocketTimeoutException -> Resource.Error(
-                ErrorResponse("Your network timed out")
+                ErrorResponse("The connection request timed out. Please check your internet signal strength")
             )
             is NoInternetException -> Resource.Error(
-                ErrorResponse("No internet")
+                ErrorResponse("No internet connection")
             )
             is IOException -> Resource.Error(
-                ErrorResponse("${throwable.message}")
+                ErrorResponse("Connection detected without Internet access")
             )
             is HttpException -> {
-                // Timber.d("Code ${throwable.code()} : Message ${throwable.message()}")
                 val message = throwableResponse(throwable)
-                val code = throwable.code()
-                Timber.d("Code $code")
 
-                return when (throwable.code()) {
-                    401 -> Resource.Error(ErrorResponse("Unauthorized"))
-                    else -> Resource.Error(message)
-                }
-
-                // NetworkResult.Error(code, message)
-
-                /*when (throwable.code()) {
-                404 -> NetworkResult.OnNotAuthorized(
-                    R.string.err_http_auth
-                )
-                else -> NetworkResult.OnUnexpected(
-                    R.string.err_http_unknown
-                )
-            }*/
+                return Resource.Error(message)
             }
             else -> Resource.Error(null)
         }
