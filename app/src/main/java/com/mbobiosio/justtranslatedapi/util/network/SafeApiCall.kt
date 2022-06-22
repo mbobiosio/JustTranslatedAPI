@@ -20,7 +20,6 @@ suspend fun <T> safeApiCall(
     return try {
         Resource.Success(apiCall())
     } catch (throwable: Throwable) {
-        Timber.d("Throwable $throwable")
         when (throwable) {
             is SocketTimeoutException -> Resource.Error(
                 ErrorResponse("Your network timed out")
@@ -34,6 +33,8 @@ suspend fun <T> safeApiCall(
             is HttpException -> {
                 // Timber.d("Code ${throwable.code()} : Message ${throwable.message()}")
                 val message = throwableResponse(throwable)
+                val code = throwable.code()
+                Timber.d("Code $code")
 
                 return when (throwable.code()) {
                     401 -> Resource.Error(ErrorResponse("Unauthorized"))

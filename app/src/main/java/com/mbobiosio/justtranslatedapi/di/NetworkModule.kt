@@ -72,7 +72,7 @@ class NetworkModule {
         Retrofit.Builder().apply {
             baseUrl(baseUrl)
             client(okHttpClient)
-            addConverterFactory(MoshiConverterFactory.create(moshi))
+            addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
         }.build()
 
     @Singleton

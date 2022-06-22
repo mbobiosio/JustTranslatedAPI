@@ -72,15 +72,18 @@ dependencies {
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // Power Spinner
+    implementation("com.github.skydoves:powerspinner:1.2.3")
+
     // Hilt for di
-    val hilt_version = "2.42"
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    kapt("com.google.dagger:hilt-compiler:$hilt_version")
+    val hiltVersion = "2.42"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
 
     // Retrofit
-    val retrofit_version = "2.9.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofit_version")
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     // OkHttp Logger
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
@@ -91,10 +94,10 @@ dependencies {
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
     // LifeCycle
-    val lifecycle_version = "2.4.1"
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    val lifecycleVersion = "2.4.1"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

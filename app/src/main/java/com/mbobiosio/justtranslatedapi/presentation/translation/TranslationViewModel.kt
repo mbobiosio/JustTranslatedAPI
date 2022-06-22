@@ -40,7 +40,7 @@ class TranslationViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _uIState.value = UIState(
-                        error = result.error?.message ?: "Unexpected error"
+                        error = result.error?.message
                     )
                 }
             }

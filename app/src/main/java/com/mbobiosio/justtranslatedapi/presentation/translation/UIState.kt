@@ -9,5 +9,5 @@ import com.mbobiosio.justtranslatedapi.domain.model.Translation
 data class UIState(
     val isLoading: Boolean = false,
     val result: Translation? = null,
-    val error: String = ""
+    val error: String? = ""
 )

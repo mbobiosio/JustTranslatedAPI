@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">JustTranslatedAPI</string>
+    <string name="language_hint">Select language</string>
     <string name="input_text">Input text</string>
     <string name="translate">Translate</string>
+    <string name="empty_text">Input cannot be empty</string>
+    <string name="select_language_error">Select language</string>
+    <string name="sample_text">This article explores different ways to convert a list to a string in Kotlin. All elements in the specified list should be joined into a single string separated by a delimiter. The solution should not add the delimiter before or after the string.</string>
 </resources>
