@@ -84,7 +84,10 @@ class TranslationFragment : Fragment() {
                     requireActivity().toast(message = getString(R.string.select_language_error))
                 }
                 else -> {
+                    // extract language code from string
                     langCode = getLanguageCode(language = langCode)
+
+                    // make translation request
                     viewModel.handleTranslation(language = langCode, text)
                 }
             }
