@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mbobiosio.justtranslatedapi.databinding.FragmentTranslationBinding
@@ -34,10 +35,7 @@ class TranslationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val input =
-            "This article explores different ways to convert a list to a string in Kotlin. All elements in the specified list should be joined into a single string separated by a delimiter. The solution should not add the delimiter before or after the string."
-
-        viewModel.handleTranslation("fr", text = input)
+        setupViews()
 
         viewModel.translation.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -54,6 +52,18 @@ class TranslationFragment : Fragment() {
         }
     }
 
+    private fun setupViews() = with(binding) {
+        translate.setOnClickListener {
+            val text = inputEditText.text.toString()
+            if (text.isNotEmpty()) {
+                viewModel.handleTranslation("fr", text)
+            } else {
+                Toast.makeText(requireActivity(), "Input cannot be empty", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
     private fun updateProgress(state: Boolean) = with(binding) {
         Timber.d("State $state")
     }
@@ -61,9 +71,8 @@ class TranslationFragment : Fragment() {
     private fun updateUI(translation: Translation?) = with(binding) {
         translation?.let {
             it.text.forEach { text ->
-                Timber.d("Text $text")
+                translationTextView.text = text
             }
-            Timber.d("Result ${it.text}")
         }
     }
 

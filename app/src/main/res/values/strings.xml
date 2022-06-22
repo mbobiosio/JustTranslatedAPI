@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JustTranslatedAPI</string>
+    <string name="input_text">Input text</string>
+    <string name="translate">Translate</string>
 </resources>
