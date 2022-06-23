@@ -24,6 +24,7 @@ class TranslationViewModel @Inject constructor(
     val translation: LiveData<UIState> get() = _uIState
 
     fun handleTranslation(language: String, text: String) {
+        _uIState.value = UIState.Loading
         getTranslationUseCase.invoke(language, text).onEach { result ->
             _uIState.value = when (result) {
                 is Resource.Loading -> UIState.Loading

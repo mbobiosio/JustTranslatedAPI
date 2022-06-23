@@ -20,7 +20,6 @@ class TranslationUseCase @Inject constructor(
 ) {
 
     operator fun invoke(language: String, text: String): Flow<Resource<Translation>> = flow {
-        emit(Resource.Loading)
         emit(
             safeApiCall {
                 repository.translateString(language, text).mapRemoteDataToDomain()
