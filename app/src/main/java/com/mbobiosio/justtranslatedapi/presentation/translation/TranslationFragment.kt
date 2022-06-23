@@ -8,6 +8,7 @@ import com.mbobiosio.justtranslatedapi.databinding.FragmentTranslationBinding
 import com.mbobiosio.justtranslatedapi.domain.model.Translation
 import com.mbobiosio.justtranslatedapi.presentation.base.BaseFragment
 import com.mbobiosio.justtranslatedapi.util.getLanguageCode
+import com.mbobiosio.justtranslatedapi.util.hideKeyboard
 import com.mbobiosio.justtranslatedapi.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,6 +51,10 @@ class TranslationFragment :
 
         // Set click listener on Floating Action Button
         translate.setOnClickListener {
+            // hide keyboard
+            it.hideKeyboard()
+
+            // get string from edittext
             val text = inputEditText.text.toString()
             when {
                 text.isEmpty() -> {
