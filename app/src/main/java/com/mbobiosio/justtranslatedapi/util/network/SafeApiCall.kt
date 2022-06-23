@@ -35,7 +35,7 @@ suspend fun <T> safeApiCall(
 
                 return Resource.Error(message)
             }
-            else -> Resource.Error(null)
+            else -> Resource.Error(ErrorResponse("An unexpected error occurred"))
         }
     }
 }
